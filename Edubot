@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLearn</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center; }
+        .header { background: #2869ff; padding: 20px; color: white; font-size: 1.8rem; font-weight: bold; text-align: left; padding-left: 20px; }
+        .hero { background: #3275ff; padding: 50px 20px; color: white; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin: 0; }
+        .hero p { font-size: 1.2rem; }
+        .chatbot-btn { position: fixed; bottom: 20px; right: 20px; background: #2869ff; color: white; padding: 15px 20px; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .chatbot-btn:hover { background: #1a53cc; }
+        .chatbot-container { display: none; position: fixed; bottom: 80px; right: 20px; width: 700px; height: 290px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); overflow: hidden; flex-direction: column; }
+        .chatbot-header { background: #2869ff; color: white; padding: 10px; font-size: 1.2rem; text-align: left; }
+        .chatbot-messages { flex: 1; padding: 10px; overflow-y: auto; height: 300px; text-align: left; }
+        .chatbot-input { display: flex; padding: 10px; }
+        .chatbot-input input { flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 5px; }
+        .chatbot-input button { margin-left: 5px; padding: 5px 10px; border: none; background: #2869ff; color: white; cursor: pointer; }
+        .subjects { display: flex; justify-content: center; gap: 20px; padding: 30px; flex-wrap: wrap; }
+        .subject-container { position: relative; }
+        .subject { background: white; padding: 20px 40px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); font-size: 1.5rem; font-weight: bold; cursor: pointer; transition: 0.3s; position: relative; }
+        .subject:hover { transform: scale(1.05); }
+        .chapter-list { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: left; padding: 10px; max-height: 200px; overflow-y: auto; z-index: 10; }
+        .chapter-list a { display: block; padding: 5px; text-decoration: none; color: #2869ff; font-size: 1rem; }
+        .chapter-list a:hover { background: #f4f4f4; }
+        .quiz-section { position: fixed; bottom: 20px; left: 20px; background: #2869ff; color: white; padding: 15px 20px; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .quiz-section:hover { background: #1a53cc; }
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 60%;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .quiz-modal h2 { margin-top: 0; font-size: 1.5rem; text-align: center; }
+        .quiz-modal .quiz-content { max-height: 70%; overflow-y: auto; padding: 10px; text-align: left; }
+        .quiz-modal .close-btn { display: block; margin: 10px auto; padding: 10px 20px; background: #2869ff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        .quiz-modal .close-btn:hover { background: #1a53cc; }
+    </style>
+</head>
+<body>
+    <div class="header">EduLearn</div>
+    <button class="chatbot-btn" onclick="toggleChatbot()">🤖 EduBot</button>
+    <button class="quiz-section" onclick="generateQuiz()">📝 Take Quiz</button>
+
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">🤖 EduBot here</div>
+        <div class="chatbot-messages" id="chat-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chat-input" placeholder="Ask a question...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <div class="hero">
+        <h1>Learn science and maths with EduBot</h1>
+        <p>Interactive quizzes, notes, and AI chatbot for doubt-solving</p>
+    </div>
+
+    <div class="subjects">
+        <!-- Physics -->
+        <div class="subject-container" onclick="toggleChapters('physics')">
+            <div class="subject">Physics</div>
+            <div class="chapter-list" id="physics">
+                <a href="https://www.youtube.com/watch?v=YKLZpAjK-M8">Kinematics💡</a>
+                <a href="https://www.youtube.com/watch?v=usbnBqMWyh4">Laws of Motion💡</a>
+                <a href="#">Gravitation💡</a>
+                <a href="#">Work, Energy, and Power💡</a>
+                <a href="#">Electromagnetic Induction💡</a>
+            </div>
+        </div>
+
+        <!-- Chemistry -->
+        <div class="subject-container" onclick="toggleChapters('chemistry')">
+            <div class="subject">Chemistry</div>
+            <div class="chapter-list" id="chemistry">
+                <a href="https://www.youtube.com/watch?v=ke_kmMUoGnw">Atomic Structure🧪</a>
+                <a href="https://www.youtube.com/watch?v=toPxZJ0Z-Es">Chemical Bonding🧪</a>
+                <a href="#">Thermodynamics🧪</a>
+                <a href="#">Equilibrium🧪</a>
+                <a href="#">Organic Chemistry🧪</a>
+            </div>
+        </div>
+
+        <!-- Biology -->
+        <div class="subject-container" onclick="toggleChapters('biology')">
+            <div class="subject">Biology</div>
+            <div class="chapter-list" id="biology">
+                <a href="https://www.youtube.com/watch?v=oGI7dppRMjY">Cell Structure and Function🌱</a>
+                <a href="https://www.youtube.com/watch?v=j2m4hkOJR2M">Genetics and Heredity🌱</a>
+                <a href="#">Human Physiology🌱</a>
+                <a href="#">Plant Physiology🌱</a>
+                <a href="#">Evolution and Natural Selection🌱</a>
+            </div>
+        </div>
+
+        <!-- Mathematics -->
+        <div class="subject-container" onclick="toggleChapters('maths')">
+            <div class="subject">Mathematics</div>
+            <div class="chapter-list" id="maths">
+                <a href="https://www.youtube.com/watch?v=pVX8_vNbta4">Algebra📐</a>
+                <a href="https://www.youtube.com/watch?v=DKz3GLI-pl4">Trigonometry📐</a>
+                <a href="#">Calculus📐</a>
+                <a href="#">Coordinate Geometry📐</a>
+                <a href="#">Probability and Statistics📐</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quizModal">
+        <h2>Quiz Questions</h2>
+        <div class="quiz-content" id="quizContent"></div>
+        <button class="close-btn" onclick="closeQuiz()">Close</button>
+    </div>
+
+    <script>
+        const apiKey = "YOUR_GEMINI_API_KEY"; // Replace with your actual Gemini API key
+
+        function toggleChapters(subject) {
+            const chapters = document.getElementById(subject);
+            chapters.style.display = chapters.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            chatbot.style.display = chatbot.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            if (input.value.trim() === '') return;
+
+            const userMessage = document.createElement('div');
+            userMessage.innerHTML = <strong>User:</strong> ${input.value};
+            messages.appendChild(userMessage);
+
+            fetch(https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: input.value }] }] })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't understand that.";
+                aiResponse = aiResponse.replace(/\*/g, '');
+
+                const aiMessage = document.createElement('div');
+                aiMessage.innerHTML = <strong>AI:</strong>;
+                
+                aiResponse.split(/\n\s*\n/).forEach(para => {
+                    const pTag = document.createElement('p');
+                    pTag.textContent = para.trim();
+                    aiMessage.appendChild(pTag);
+                });
+
+                messages.appendChild(aiMessage);
+            })
+            .catch(error => {
+                const errorMessage = document.createElement('div');
+                errorMessage.innerHTML = <strong>AI:</strong> <p>Error fetching response.</p>;
+                messages.appendChild(errorMessage);
+                console.error("Error:", error);
+            });
+
+            input.value = '';
+        }
+
+        function generateQuiz() {
+            const chapter = prompt("Enter the chapter name for the quiz:");
+            if (!chapter) {
+                alert("You must enter a chapter name to generate a quiz.");
+                return;
+            }
+
+            fetch(https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    contents: [{ parts: [{ text: Generate 5 multiple-choice questions from the chapter: ${chapter}. }] }] 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const quizData = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error generating quiz.";
+                document.getElementById("quizContent").innerHTML = quizData.replace(/\n/g, "<br><br>");
+                document.getElementById("quizModal").style.display = "block";
+            })
+            .catch(error => {
+                alert("Error fetching quiz questions.");
+                console.error("Error:", error);
+            });
+        }
+
+        function closeQuiz() {
+            document.getElementById("quizModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
