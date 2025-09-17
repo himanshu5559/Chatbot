@@ -5,136 +5,447 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduLearn</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center; }
-        .header { background: #2869ff; padding: 20px; color: white; font-size: 1.8rem; font-weight: bold; text-align: left; padding-left: 20px; }
-        .hero { background: #3275ff; padding: 50px 20px; color: white; text-align: center; }
-        .hero h1 { font-size: 2.5rem; margin: 0; }
-        .hero p { font-size: 1.2rem; }
-        .chatbot-btn { position: fixed; bottom: 20px; right: 20px; background: #2869ff; color: white; padding: 15px 20px; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .chatbot-btn:hover { background: #1a53cc; }
-        .chatbot-container { display: none; position: fixed; bottom: 80px; right: 20px; width: 700px; height: 290px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); overflow: hidden; flex-direction: column; }
-        .chatbot-header { background: #2869ff; color: white; padding: 10px; font-size: 1.2rem; text-align: left; }
-        .chatbot-messages { flex: 1; padding: 10px; overflow-y: auto; height: 300px; text-align: left; }
-        .chatbot-input { display: flex; padding: 10px; }
-        .chatbot-input input { flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 5px; }
-        .chatbot-input button { margin-left: 5px; padding: 5px 10px; border: none; background: #2869ff; color: white; cursor: pointer; }
-        .subjects { display: flex; justify-content: center; gap: 20px; padding: 30px; flex-wrap: wrap; }
-        .subject-container { position: relative; }
-        .subject { background: white; padding: 20px 40px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); font-size: 1.5rem; font-weight: bold; cursor: pointer; transition: 0.3s; position: relative; }
-        .subject:hover { transform: scale(1.05); }
-        .chapter-list { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: left; padding: 10px; max-height: 200px; overflow-y: auto; z-index: 10; }
-        .chapter-list a { display: block; padding: 5px; text-decoration: none; color: #2869ff; font-size: 1rem; }
-        .chapter-list a:hover { background: #f4f4f4; }
-        .quiz-section { position: fixed; bottom: 20px; left: 20px; background: #2869ff; color: white; padding: 15px 20px; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .quiz-section:hover { background: #1a53cc; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            text-align: center; 
+        }
+        .header { 
+            background: linear-gradient(45deg, #2869ff, #1a53cc); 
+            padding: 20px; 
+            color: white; 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            text-align: left; 
+            padding-left: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .hero { 
+            background: linear-gradient(45deg, #3275ff, #2869ff); 
+            padding: 50px 20px; 
+            color: white; 
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .hero h1 { 
+            font-size: 2.5rem; 
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .hero p { 
+            font-size: 1.2rem;
+            margin-top: 15px;
+            opacity: 0.9;
+        }
+        .chatbot-btn { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            background: linear-gradient(45deg, #2869ff, #1a53cc); 
+            color: white; 
+            padding: 15px 20px; 
+            border: none; 
+            border-radius: 50px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            box-shadow: 0 4px 15px rgba(40, 105, 255, 0.3);
+            z-index: 1000;
+        }
+        .chatbot-btn:hover { 
+            background: linear-gradient(45deg, #1a53cc, #0f3a99); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 105, 255, 0.4);
+        }
+        .chatbot-container { 
+            display: none; 
+            position: fixed; 
+            bottom: 80px; 
+            right: 20px; 
+            width: 350px; 
+            height: 400px; 
+            background: white; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            overflow: hidden; 
+            flex-direction: column;
+            z-index: 999;
+        }
+        .chatbot-header { 
+            background: linear-gradient(45deg, #2869ff, #1a53cc); 
+            color: white; 
+            padding: 15px; 
+            font-size: 1.2rem; 
+            text-align: center;
+            font-weight: bold;
+        }
+        .chatbot-messages { 
+            flex: 1; 
+            padding: 15px; 
+            overflow-y: auto; 
+            text-align: left;
+            background: #f8f9fa;
+        }
+        .message { 
+            margin-bottom: 10px; 
+            padding: 8px 12px; 
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user-message { 
+            background: #2869ff; 
+            color: white; 
+            margin-left: auto;
+            text-align: right;
+        }
+        .ai-message { 
+            background: white; 
+            border: 1px solid #e0e0e0;
+            color: #333;
+        }
+        .chatbot-input { 
+            display: flex; 
+            padding: 10px; 
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+        .chatbot-input input { 
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 20px;
+            outline: none;
+        }
+        .chatbot-input button { 
+            margin-left: 5px; 
+            padding: 10px 15px; 
+            border: none; 
+            background: #2869ff; 
+            color: white; 
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .chatbot-input button:hover {
+            background: #1a53cc;
+        }
+        .subjects { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; 
+            padding: 30px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .subject-container { 
+            position: relative;
+        }
+        .subject { 
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            padding: 30px 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s;
+            color: #2869ff;
+            border: 2px solid transparent;
+        }
+        .subject:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border-color: #2869ff;
+        }
+        .chapter-list { 
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            right: 0;
+            background: white; 
+            border-radius: 10px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+            text-align: left; 
+            padding: 15px; 
+            max-height: 250px; 
+            overflow-y: auto; 
+            z-index: 10;
+            margin-top: 10px;
+        }
+        .chapter-list a { 
+            display: block; 
+            padding: 12px 15px; 
+            text-decoration: none; 
+            color: #2869ff; 
+            font-size: 1rem;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+        .chapter-list a:hover { 
+            background: linear-gradient(45deg, #2869ff, #1a53cc);
+            color: white;
+            transform: translateX(5px);
+        }
+        .quiz-section { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            background: linear-gradient(45deg, #28a745, #20c997); 
+            color: white; 
+            padding: 15px 20px; 
+            border: none; 
+            border-radius: 50px; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            z-index: 1000;
+        }
+        .quiz-section:hover { 
+            background: linear-gradient(45deg, #20c997, #17a2b8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
         .quiz-modal {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: 60%;
-            background: white;
-            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 20px;
-            z-index: 1000;
-            overflow-y: auto;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
         }
-        .quiz-modal h2 { margin-top: 0; font-size: 1.5rem; text-align: center; }
-        .quiz-modal .quiz-content { max-height: 70%; overflow-y: auto; padding: 10px; text-align: left; }
-        .quiz-modal .close-btn { display: block; margin: 10px auto; padding: 10px 20px; background: #2869ff; color: white; border: none; cursor: pointer; border-radius: 5px; }
-        .quiz-modal .close-btn:hover { background: #1a53cc; }
+        .quiz-content-wrapper {
+            width: 80%;
+            max-width: 600px;
+            max-height: 80%;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .quiz-content-wrapper h2 { 
+            margin-top: 0; 
+            font-size: 1.8rem; 
+            text-align: center;
+            color: #2869ff;
+            margin-bottom: 25px;
+        }
+        .quiz-content { 
+            text-align: left;
+            line-height: 1.6;
+            color: #333;
+        }
+        .quiz-content-wrapper .close-btn { 
+            display: block; 
+            margin: 20px auto 0; 
+            padding: 12px 30px; 
+            background: linear-gradient(45deg, #2869ff, #1a53cc); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .quiz-content-wrapper .close-btn:hover { 
+            background: linear-gradient(45deg, #1a53cc, #0f3a99);
+            transform: translateY(-2px);
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
-    <div class="header">EduLearn</div>
+    <div class="header">🎓 EduLearn</div>
     <button class="chatbot-btn" onclick="toggleChatbot()">🤖 EduBot</button>
     <button class="quiz-section" onclick="generateQuiz()">📝 Take Quiz</button>
 
     <div class="chatbot-container" id="chatbot">
-        <div class="chatbot-header">🤖 EduBot here</div>
-        <div class="chatbot-messages" id="chat-messages"></div>
+        <div class="chatbot-header">🤖 EduBot Assistant</div>
+        <div class="chatbot-messages" id="chat-messages">
+            <div class="message ai-message">
+                Hello! I'm EduBot, your learning assistant. Ask me anything about Physics, Chemistry, Biology, or Mathematics!
+            </div>
+        </div>
         <div class="chatbot-input">
-            <input type="text" id="chat-input" placeholder="Ask a question...">
+            <input type="text" id="chat-input" placeholder="Ask a question..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <div class="hero">
-        <h1>Learn science and maths with EduBot</h1>
-        <p>Interactive quizzes, notes, and AI chatbot for doubt-solving</p>
+        <h1>Learn Science & Mathematics with AI</h1>
+        <p>Interactive learning with personalized quizzes, comprehensive notes, and intelligent AI assistance</p>
     </div>
 
     <div class="subjects">
         <!-- Physics -->
-        <div class="subject-container" onclick="toggleChapters('physics')">
-            <div class="subject">Physics</div>
+        <div class="subject-container">
+            <div class="subject" onclick="toggleChapters('physics')">
+                ⚡ Physics
+            </div>
             <div class="chapter-list" id="physics">
-                <a href="https://www.youtube.com/watch?v=YKLZpAjK-M8">Kinematics💡</a>
-                <a href="https://www.youtube.com/watch?v=usbnBqMWyh4">Laws of Motion💡</a>
-                <a href="#">Gravitation💡</a>
-                <a href="#">Work, Energy, and Power💡</a>
-                <a href="#">Electromagnetic Induction💡</a>
+                <a href="https://www.youtube.com/watch?v=YKLZpAjK-M8" target="_blank">🚀 Kinematics</a>
+                <a href="https://www.youtube.com/watch?v=usbnBqMWyh4" target="_blank">⚖ Laws of Motion</a>
+                <a href="#" onclick="showChapterInfo('Gravitation')">🌍 Gravitation</a>
+                <a href="#" onclick="showChapterInfo('Work, Energy & Power')">⚡ Work, Energy & Power</a>
+                <a href="#" onclick="showChapterInfo('Electromagnetic Induction')">🔌 Electromagnetic Induction</a>
             </div>
         </div>
 
         <!-- Chemistry -->
-        <div class="subject-container" onclick="toggleChapters('chemistry')">
-            <div class="subject">Chemistry</div>
+        <div class="subject-container">
+            <div class="subject" onclick="toggleChapters('chemistry')">
+                🧪 Chemistry
+            </div>
             <div class="chapter-list" id="chemistry">
-                <a href="https://www.youtube.com/watch?v=ke_kmMUoGnw">Atomic Structure🧪</a>
-                <a href="https://www.youtube.com/watch?v=toPxZJ0Z-Es">Chemical Bonding🧪</a>
-                <a href="#">Thermodynamics🧪</a>
-                <a href="#">Equilibrium🧪</a>
-                <a href="#">Organic Chemistry🧪</a>
+                <a href="https://www.youtube.com/watch?v=ke_kmMUoGnw" target="_blank">⚛ Atomic Structure</a>
+                <a href="https://www.youtube.com/watch?v=toPxZJ0Z-Es" target="_blank">🔗 Chemical Bonding</a>
+                <a href="#" onclick="showChapterInfo('Thermodynamics')">🔥 Thermodynamics</a>
+                <a href="#" onclick="showChapterInfo('Chemical Equilibrium')">⚖ Chemical Equilibrium</a>
+                <a href="#" onclick="showChapterInfo('Organic Chemistry')">🧬 Organic Chemistry</a>
             </div>
         </div>
 
         <!-- Biology -->
-        <div class="subject-container" onclick="toggleChapters('biology')">
-            <div class="subject">Biology</div>
+        <div class="subject-container">
+            <div class="subject" onclick="toggleChapters('biology')">
+                🌱 Biology
+            </div>
             <div class="chapter-list" id="biology">
-                <a href="https://www.youtube.com/watch?v=oGI7dppRMjY">Cell Structure and Function🌱</a>
-                <a href="https://www.youtube.com/watch?v=j2m4hkOJR2M">Genetics and Heredity🌱</a>
-                <a href="#">Human Physiology🌱</a>
-                <a href="#">Plant Physiology🌱</a>
-                <a href="#">Evolution and Natural Selection🌱</a>
+                <a href="https://www.youtube.com/watch?v=oGI7dppRMjY" target="_blank">🔬 Cell Structure & Function</a>
+                <a href="https://www.youtube.com/watch?v=j2m4hkOJR2M" target="_blank">🧬 Genetics & Heredity</a>
+                <a href="#" onclick="showChapterInfo('Human Physiology')">❤ Human Physiology</a>
+                <a href="#" onclick="showChapterInfo('Plant Physiology')">🌿 Plant Physiology</a>
+                <a href="#" onclick="showChapterInfo('Evolution')">🦕 Evolution & Natural Selection</a>
             </div>
         </div>
 
         <!-- Mathematics -->
-        <div class="subject-container" onclick="toggleChapters('maths')">
-            <div class="subject">Mathematics</div>
+        <div class="subject-container">
+            <div class="subject" onclick="toggleChapters('maths')">
+                📐 Mathematics
+            </div>
             <div class="chapter-list" id="maths">
-                <a href="https://www.youtube.com/watch?v=pVX8_vNbta4">Algebra📐</a>
-                <a href="https://www.youtube.com/watch?v=DKz3GLI-pl4">Trigonometry📐</a>
-                <a href="#">Calculus📐</a>
-                <a href="#">Coordinate Geometry📐</a>
-                <a href="#">Probability and Statistics📐</a>
+                <a href="https://www.youtube.com/watch?v=pVX8_vNbta4" target="_blank">📊 Algebra</a>
+                <a href="https://www.youtube.com/watch?v=DKz3GLI-pl4" target="_blank">📐 Trigonometry</a>
+                <a href="#" onclick="showChapterInfo('Calculus')">∫ Calculus</a>
+                <a href="#" onclick="showChapterInfo('Coordinate Geometry')">📈 Coordinate Geometry</a>
+                <a href="#" onclick="showChapterInfo('Probability & Statistics')">🎲 Probability & Statistics</a>
             </div>
         </div>
     </div>
 
     <!-- Quiz Modal -->
     <div class="quiz-modal" id="quizModal">
-        <h2>Quiz Questions</h2>
-        <div class="quiz-content" id="quizContent"></div>
-        <button class="close-btn" onclick="closeQuiz()">Close</button>
+        <div class="quiz-content-wrapper">
+            <h2>📝 Quiz Questions</h2>
+            <div class="quiz-content" id="quizContent"></div>
+            <button class="close-btn" onclick="closeQuiz()">Close Quiz</button>
+        </div>
     </div>
 
     <script>
-        const apiKey = "YOUR_GEMINI_API_KEY"; // Replace with your actual Gemini API key
+        // Sample responses for the AI chatbot
+        const aiResponses = {
+            physics: [
+                "Physics is the study of matter, energy, and their interactions. What specific topic would you like to explore?",
+                "In physics, we study concepts like motion, forces, energy, waves, and much more. Which area interests you most?",
+                "Physics helps us understand how the universe works, from tiny particles to massive galaxies."
+            ],
+            chemistry: [
+                "Chemistry is all about atoms, molecules, and chemical reactions. What would you like to learn about?",
+                "From the periodic table to organic compounds, chemistry explains the building blocks of matter.",
+                "Chemical bonds, reactions, and molecular structures are fundamental concepts in chemistry."
+            ],
+            biology: [
+                "Biology studies living organisms and life processes. Which aspect of life science interests you?",
+                "From cells to ecosystems, biology covers all forms of life and their interactions.",
+                "Genetics, evolution, physiology - biology has many fascinating branches to explore."
+            ],
+            mathematics: [
+                "Mathematics is the language of science and logic. What mathematical concept can I help you with?",
+                "From basic arithmetic to advanced calculus, math provides tools for solving problems.",
+                "Algebra, geometry, statistics - math has applications everywhere in our daily lives."
+            ],
+            default: [
+                "That's an interesting question! Let me help you understand that concept better.",
+                "I'd be happy to explain that topic. Could you be more specific about what you'd like to know?",
+                "Great question! Learning is all about curiosity. What aspect would you like to explore further?",
+                "I'm here to help with your studies. Feel free to ask about any science or math topic!"
+            ]
+        };
+
+        // Sample quiz questions for different subjects
+        const sampleQuizzes = {
+            physics: [
+                "1. What is the SI unit of force?\nA) Newton\nB) Joule\nC) Watt\nD) Pascal\n\n",
+                "2. According to Newton's first law, an object at rest will:\nA) Start moving\nB) Remain at rest unless acted upon by a force\nC) Accelerate\nD) Change direction\n\n",
+                "3. The acceleration due to gravity on Earth is approximately:\nA) 9.8 m/s²\nB) 10.8 m/s²\nC) 8.8 m/s²\nD) 11.8 m/s²\n\n",
+                "4. What type of energy does a moving car possess?\nA) Potential energy\nB) Kinetic energy\nC) Chemical energy\nD) Nuclear energy\n\n",
+                "5. Which scientist formulated the three laws of motion?\nA) Einstein\nB) Galileo\nC) Newton\nD) Kepler"
+            ],
+            chemistry: [
+                "1. What is the atomic number of carbon?\nA) 6\nB) 8\nC) 12\nD) 14\n\n",
+                "2. Which gas makes up about 78% of Earth's atmosphere?\nA) Oxygen\nB) Carbon dioxide\nC) Nitrogen\nD) Hydrogen\n\n",
+                "3. What type of bond is formed when electrons are shared?\nA) Ionic bond\nB) Covalent bond\nC) Metallic bond\nD) Hydrogen bond\n\n",
+                "4. The pH of pure water is:\nA) 6\nB) 7\nC) 8\nD) 9\n\n",
+                "5. Which element has the chemical symbol 'Au'?\nA) Silver\nB) Gold\nC) Aluminum\nD) Argon"
+            ],
+            biology: [
+                "1. What is the basic unit of life?\nA) Tissue\nB) Organ\nC) Cell\nD) Organism\n\n",
+                "2. Which organelle is known as the 'powerhouse of the cell'?\nA) Nucleus\nB) Ribosome\nC) Mitochondria\nD) Golgi apparatus\n\n",
+                "3. DNA stands for:\nA) Deoxyribonucleic acid\nB) Dinitrogen oxide\nC) Diatomic nucleic acid\nD) Dynamic nuclear acid\n\n",
+                "4. How many chambers does a human heart have?\nA) 2\nB) 3\nC) 4\nD) 5\n\n",
+                "5. Photosynthesis occurs in which part of plant cells?\nA) Nucleus\nB) Mitochondria\nC) Chloroplasts\nD) Vacuoles"
+            ],
+            mathematics: [
+                "1. What is the value of π (pi) approximately?\nA) 3.14\nB) 2.71\nC) 1.41\nD) 1.73\n\n",
+                "2. If x + 5 = 12, what is the value of x?\nA) 5\nB) 7\nC) 17\nD) 60\n\n",
+                "3. What is the square root of 64?\nA) 6\nB) 7\nC) 8\nD) 9\n\n",
+                "4. In a right triangle, which theorem relates the sides?\nA) Pythagorean theorem\nB) Fermat's theorem\nC) Euler's theorem\nD) Goldbach's theorem\n\n",
+                "5. What is 15% of 200?\nA) 25\nB) 30\nC) 35\nD) 40"
+            ]
+        };
 
         function toggleChapters(subject) {
             const chapters = document.getElementById(subject);
+            const allChapters = document.querySelectorAll('.chapter-list');
+            
+            // Close all other chapter lists
+            allChapters.forEach(chapter => {
+                if (chapter.id !== subject) {
+                    chapter.style.display = 'none';
+                }
+            });
+            
+            // Toggle the clicked one
             chapters.style.display = chapters.style.display === 'block' ? 'none' : 'block';
         }
 
         function toggleChatbot() {
             const chatbot = document.getElementById('chatbot');
-            chatbot.style.display = chatbot.style.display === 'none' ? 'flex' : 'none';
+            chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
         }
 
         function sendMessage() {
@@ -142,70 +453,88 @@
             const messages = document.getElementById('chat-messages');
             if (input.value.trim() === '') return;
 
+            // Add user message
             const userMessage = document.createElement('div');
-            userMessage.innerHTML = <strong>User:</strong> ${input.value};
+            userMessage.className = 'message user-message';
+            userMessage.textContent = input.value;
             messages.appendChild(userMessage);
 
-            fetch(https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ contents: [{ parts: [{ text: input.value }] }] })
-            })
-            .then(response => response.json())
-            .then(data => {
-                let aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't understand that.";
-                aiResponse = aiResponse.replace(/\*/g, '');
-
-                const aiMessage = document.createElement('div');
-                aiMessage.innerHTML = <strong>AI:</strong>;
-                
-                aiResponse.split(/\n\s*\n/).forEach(para => {
-                    const pTag = document.createElement('p');
-                    pTag.textContent = para.trim();
-                    aiMessage.appendChild(pTag);
-                });
-
-                messages.appendChild(aiMessage);
-            })
-            .catch(error => {
-                const errorMessage = document.createElement('div');
-                errorMessage.innerHTML = <strong>AI:</strong> <p>Error fetching response.</p>;
-                messages.appendChild(errorMessage);
-                console.error("Error:", error);
-            });
-
+            const userInput = input.value.toLowerCase();
             input.value = '';
+
+            // Generate AI response
+            setTimeout(() => {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message ai-message';
+                
+                let response;
+                if (userInput.includes('physics')) {
+                    response = aiResponses.physics[Math.floor(Math.random() * aiResponses.physics.length)];
+                } else if (userInput.includes('chemistry')) {
+                    response = aiResponses.chemistry[Math.floor(Math.random() * aiResponses.chemistry.length)];
+                } else if (userInput.includes('biology')) {
+                    response = aiResponses.biology[Math.floor(Math.random() * aiResponses.biology.length)];
+                } else if (userInput.includes('math')) {
+                    response = aiResponses.mathematics[Math.floor(Math.random() * aiResponses.mathematics.length)];
+                } else {
+                    response = aiResponses.default[Math.floor(Math.random() * aiResponses.default.length)];
+                }
+                
+                aiMessage.textContent = response;
+                messages.appendChild(aiMessage);
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showChapterInfo(chapterName) {
+            const chatbot = document.getElementById('chatbot');
+            const messages = document.getElementById('chat-messages');
+            
+            chatbot.style.display = 'flex';
+            
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'message ai-message';
+            aiMessage.textContent = Great choice! ${chapterName} is a fascinating topic. I'd be happy to help you understand key concepts, solve problems, or answer any questions you have about ${chapterName}. What would you like to know?;
+            messages.appendChild(aiMessage);
+            messages.scrollTop = messages.scrollHeight;
         }
 
         function generateQuiz() {
-            const chapter = prompt("Enter the chapter name for the quiz:");
-            if (!chapter) {
-                alert("You must enter a chapter name to generate a quiz.");
-                return;
-            }
-
-            fetch(https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    contents: [{ parts: [{ text: Generate 5 multiple-choice questions from the chapter: ${chapter}. }] }] 
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const quizData = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error generating quiz.";
-                document.getElementById("quizContent").innerHTML = quizData.replace(/\n/g, "<br><br>");
-                document.getElementById("quizModal").style.display = "block";
-            })
-            .catch(error => {
-                alert("Error fetching quiz questions.");
-                console.error("Error:", error);
-            });
+            const subjects = ['physics', 'chemistry', 'biology', 'mathematics'];
+            const randomSubject = subjects[Math.floor(Math.random() * subjects.length)];
+            
+            const quizContent = document.getElementById("quizContent");
+            const modal = document.getElementById("quizModal");
+            
+            quizContent.innerHTML = '<div class="loading">Generating quiz questions...</div>';
+            modal.style.display = "flex";
+            
+            setTimeout(() => {
+                const questions = sampleQuizzes[randomSubject];
+                let quizHTML = <h3>📚 ${randomSubject.charAt(0).toUpperCase() + randomSubject.slice(1)} Quiz</h3>;
+                quizHTML += questions.join('<br>');
+                quizHTML += '<br><p><strong>💡 Tip:</strong> Take your time and think through each question carefully!</p>';
+                
+                quizContent.innerHTML = quizHTML;
+            }, 1000);
         }
 
         function closeQuiz() {
             document.getElementById("quizModal").style.display = "none";
         }
+
+        // Close chapter lists when clicking outside
+        document.addEventListener('click', function(event) {
+            const subjects = document.querySelectorAll('.subject-container');
+            subjects.forEach(container => {
+                if (!container.contains(event.target)) {
+                    const chapterList = container.querySelector('.chapter-list');
+                    chapterList.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
